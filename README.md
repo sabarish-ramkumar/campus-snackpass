@@ -1,40 +1,53 @@
 # Campus SnackPass
 
-A full-stack cafeteria pre-ordering app. Browse the menu, filter by category, search, build a cart, check out, and get a unique token to collect food — skipping the queue.
+A full-stack cafeteria pre-ordering platform built to solve long queues during lunch rushes. Students can browse digital menus, filter by categories, search items live, build custom carts, and place orders to generate a unique pickup token for seamless queue-skipping collections.
 
-**Live demo:** _add your Vercel URL here after deploying_
-**API docs:** _add your Render URL + `/docs` here after deploying_
+---
 
-## Tech Stack
+## 🚀 Live Demo
 
-- **Frontend:** React 19 + Vite + Tailwind CSS v4 + React Router v6, deployed on Vercel
-- **Backend:** Python + FastAPI + SQLAlchemy 2.0, deployed on Render
-- **Database:** Postgres (Neon)
+* **Frontend App:** [campus-snackpass-app.vercel.app](https://campus-snackpass-app.vercel.app/)
+* **Backend API:** [campus-snackpass.onrender.com](https://campus-snackpass.onrender.com)
+* **Interactive API Docs (Swagger):** [campus-snackpass.onrender.com/docs](https://campus-snackpass.onrender.com/docs)
 
-## Features
+---
 
-- Browse menu, filter by category, live search (debounced)
-- Cart with add / remove / quantity, live-updating total
-- Checkout that generates a unique order token (e.g. `SP-4F2K9`) server-side
-- Order lookup by token
-- Full CRUD on menu items (create / read / update / soft-delete)
+## 🛠️ Tech Stack
 
-## Architecture notes worth knowing (in case you're asked)
+* **Frontend:** React 19, Vite, Tailwind CSS v4, React Router v6 (Deployed on **Vercel**)
+* **Backend:** Python, FastAPI, SQLAlchemy 2.0, Pydantic (Deployed on **Render**)
+* **Database:** PostgreSQL (Hosted on **Neon Database**)
 
-- **Server-side price computation.** The frontend only ever sends `{ menu_item_id, quantity }` when placing an order. The backend looks up the real price and computes the total itself — a tampered request body can't change what gets charged.
-- **Price snapshotting.** Each `order_items` row stores `unit_price` at the moment of purchase, separate from the live `menu_items.price`. Changing a menu price later doesn't retroactively change past order totals — verified directly: see the "price snapshot" test in the walkthrough this shipped with.
-- **Soft delete on menu items.** Deleting a menu item sets `is_active = false` instead of removing the row, because past orders still reference it by foreign key.
-- **CORS.** Frontend and backend are separate deployments (Vercel + Render), so CORS is configured explicitly rather than left open — see `backend/app/main.py`.
+---
 
-## Running locally
+## ✨ Features
 
-### Backend
+* **Interactive Menu:** Filter by categories (*Beverages, Snacks, Meals, Desserts*) with debounced live search.
+* **Smart Cart:** Dynamic quantity adjustment and real-time total updates.
+* **Order Token Generation:** Server-side generation of short, secure order tokens (e.g., `SP-4F2K9`) for food collection.
+* **Order Lookup:** Track order status and item breakdowns using the assigned order token.
+* **Menu Management (CRUD):** Admin capability to create, read, update, and soft-delete menu items.
+
+---
+
+## 🏗️ Architecture & Key Engineering Decisions
+
+* **Server-Side Price Calculation:** The frontend payload sends only item IDs and quantities (`{ menu_item_id, quantity }`). Total calculations occur exclusively on the backend to prevent request body price tampering.
+* **Historical Price Snapshotting:** Each `order_items` record stores a frozen `unit_price` at the moment of purchase. Updating a menu item's price in the database does not retroactively alter past order historical totals.
+* **Soft Deletes:** Deleting menu items sets `is_active = false` instead of executing a hard row deletion, maintaining foreign key integrity for historical orders.
+* **Strict CORS Strategy:** Cross-Origin Resource Sharing is strictly configured between Vercel and Render to prevent unauthorized domain access.
+
+---
+
+## 💻 Local Setup & Development
+
+### 1. Backend Setup
+
 ```bash
 cd backend
 python -m venv venv
 source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env            # then fill in your Neon DATABASE_URL
 python -m app.seed              # populates menu_items, safe to re-run
 uvicorn app.main:app --reload
 ```
