@@ -48,9 +48,6 @@ npm run dev
 ```
 App now running at `http://localhost:5173`.
 
-## Deployment
-
-See `docs/2day-plan.md` (Session 9) for the full step-by-step Vercel + Render deployment guide, including environment variables and the CORS gotcha that trips up most first deploys.
 
 ## Known scope cuts (intentional, not oversights)
 
