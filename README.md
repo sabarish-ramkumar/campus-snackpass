@@ -7,8 +7,6 @@ A full-stack cafeteria pre-ordering platform built to solve long queues during l
 ## 🚀 Live Demo
 
 * **Frontend App:** [campus-snackpass-app.vercel.app](https://campus-snackpass-app.vercel.app/)
-* **Backend API:** [campus-snackpass.onrender.com](https://campus-snackpass.onrender.com)
-* **Interactive API Docs (Swagger):** [campus-snackpass.onrender.com/docs](https://campus-snackpass.onrender.com/docs)
 
 ---
 
